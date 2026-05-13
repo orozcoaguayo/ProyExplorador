@@ -1,0 +1,37 @@
+﻿<Application x:Class="ProyExplorador.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="clr-namespace:ProyExplorador.Helpers">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!-- ① Tema oscuro propio (colores, brushes, radii) -->
+                <ResourceDictionary Source="/Themes/DarkTheme.xaml"/>
+
+                <!-- ② Estilos de controles personalizados -->
+                <ResourceDictionary Source="/Themes/Styles.xaml"/>
+
+                <!-- ③ Material Design – tema oscuro base -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- ══ Convertidores de valor disponibles en toda la app ══ -->
+            <helpers:BoolToVisibilityConverter        x:Key="BoolToVisibilityConverter"/>
+            <helpers:InverseBoolConverter             x:Key="InverseBoolConverter"/>
+            <helpers:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter"/>
+            <helpers:UsageToColorConverter            x:Key="UsageToColorConverter"/>
+            <helpers:ViewModeToVisibilityConverter    x:Key="ViewModeToVisibilityConverter"/>
+            <helpers:BoolToPlayPauseConverter         x:Key="BoolToPlayPauseConverter"/>
+            <helpers:BoolToMuteIconConverter          x:Key="BoolToMuteIconConverter"/>
+            <helpers:StringToBrushConverter           x:Key="StringToBrushConverter"/>
+            <helpers:InitialConverter                 x:Key="InitialConverter"/>
+            <helpers:FileSizeConverter                x:Key="FileSizeConverter"/>
+            <helpers:DateTimeAgoConverter             x:Key="DateTimeAgoConverter"/>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,236 @@
+﻿<UserControl x:Class="ProyExplorador.Views.StatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="Transparent"
+             d:DesignHeight="768" d:DesignWidth="1060">
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <ScrollViewer Style="{StaticResource MinimalScrollViewer}">
+        <StackPanel>
+
+            <!-- Hero -->
+            <Border MinHeight="110">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#0E0E18" Offset="0"/>
+                        <GradientStop Color="#141428" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid Margin="36,24,36,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="Estadísticas del Sistema"
+                                   FontFamily="{StaticResource FontMain}"
+                                   FontSize="24" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text="{Binding OsInfo}"
+                                   FontFamily="{StaticResource FontMain}"
+                                   FontSize="12" Foreground="{StaticResource TextMutedBrush}"
+                                   Margin="0,6,0,0"/>
+                    </StackPanel>
+                    <Button Grid.Column="1"
+                            Content="↻  Actualizar"
+                            Command="{Binding RefreshCommand}"
+                            Style="{StaticResource BtnGhost}"
+                            VerticalAlignment="Center" Padding="14,9"/>
+                </Grid>
+            </Border>
+
+            <StackPanel Margin="36,28,36,36">
+
+                <!-- ── KPI CARDS ──────────────────────────────────── -->
+                <WrapPanel Margin="0,0,0,24">
+                    <!-- Total -->
+                    <Border Width="200" Margin="0,0,16,16"
+                            CornerRadius="13" BorderBrush="#10FFFFFF" BorderThickness="1"
+                            Padding="18,16">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#1A7C6DFA" Offset="0"/>
+                                <GradientStop Color="#0E1C1C28" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.Effect>
+                            <DropShadowEffect Color="#7C6DFA" BlurRadius="18" ShadowDepth="0" Opacity="0.12"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <TextBlock Text="💾  Total"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="12" Foreground="{StaticResource TextMutedBrush}"
+                                       Margin="0,0,0,6"/>
+                            <TextBlock Text="{Binding TotalDiskSpace}"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="22" FontWeight="Bold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                    </Border>
+                    <!-- Libre -->
+                    <Border Width="200" Margin="0,0,16,16"
+                            CornerRadius="13" BorderBrush="#10FFFFFF" BorderThickness="1"
+                            Padding="18,16">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#1A4CAF7A" Offset="0"/>
+                                <GradientStop Color="#0E1C1C28" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.Effect>
+                            <DropShadowEffect Color="#4CAF7A" BlurRadius="18" ShadowDepth="0" Opacity="0.12"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <TextBlock Text="✅  Libre"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="12" Foreground="{StaticResource TextMutedBrush}"
+                                       Margin="0,0,0,6"/>
+                            <TextBlock Text="{Binding TotalFreeSpace}"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="22" FontWeight="Bold"
+                                       Foreground="{StaticResource SuccessBrush}"/>
+                        </StackPanel>
+                    </Border>
+                    <!-- Uso -->
+                    <Border Width="200" Margin="0,0,16,16"
+                            CornerRadius="13" BorderBrush="#10FFFFFF" BorderThickness="1"
+                            Padding="18,16">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#1AF0A732" Offset="0"/>
+                                <GradientStop Color="#0E1C1C28" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <StackPanel>
+                            <TextBlock Text="📊  Uso global"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="12" Foreground="{StaticResource TextMutedBrush}"
+                                       Margin="0,0,0,6"/>
+                            <TextBlock FontFamily="{StaticResource FontMain}"
+                                       FontSize="22" FontWeight="Bold"
+                                       Foreground="{StaticResource WarningBrush}">
+                                <Run Text="{Binding OverallUsagePercent, StringFormat='{}{0:F0}'}"/>
+                                <Run Text="%"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+                <!-- ── UNIDADES ──────────────────────────────────── -->
+                <TextBlock Text="Unidades"
+                           FontFamily="{StaticResource FontMain}"
+                           FontSize="15" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,0,0,14"/>
+
+                <ItemsControl ItemsSource="{Binding Drives}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="260" Margin="0,0,16,16"
+                                    Background="{StaticResource BgCardBrush}"
+                                    CornerRadius="14" BorderBrush="#0EFFFFFF" BorderThickness="1"
+                                    Padding="18,16">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#000" BlurRadius="16" ShadowDepth="2" Opacity="0.25"/>
+                                </Border.Effect>
+                                <StackPanel>
+                                    <DockPanel Margin="0,0,0,10">
+                                        <TextBlock Text="{Binding Icon}" FontSize="22"
+                                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Label}"
+                                                       FontFamily="{StaticResource FontMain}"
+                                                       FontSize="13" FontWeight="SemiBold"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontFamily="{StaticResource FontMain}"
+                                                       FontSize="11"
+                                                       Foreground="{StaticResource TextMutedBrush}"
+                                                       Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                    <ProgressBar Value="{Binding UsagePercent}" Maximum="100"
+                                                 Style="{StaticResource ModernProgressBar}"
+                                                 Height="5" Margin="0,0,0,8"/>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding FormattedUsed}"
+                                                   FontFamily="{StaticResource FontMain}"
+                                                   FontSize="11"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock Text="{Binding FormattedFree}"
+                                                   FontFamily="{StaticResource FontMain}"
+                                                   FontSize="11"
+                                                   Foreground="{StaticResource SuccessBrush}"
+                                                   HorizontalAlignment="Right"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- ── TIPOS DE ARCHIVO ──────────────────────────── -->
+                <TextBlock Text="Tipos de Archivo"
+                           FontFamily="{StaticResource FontMain}"
+                           FontSize="15" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,12,0,14"/>
+
+                <ItemsControl ItemsSource="{Binding FileTypes}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="180" Margin="0,0,12,12"
+                                    Background="{StaticResource BgCardBrush}"
+                                    CornerRadius="12" BorderBrush="#0AFFFFFF" BorderThickness="1"
+                                    Padding="16,14">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Icon}" FontSize="26"
+                                               HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                    <TextBlock Text="{Binding Name}"
+                                               FontFamily="{StaticResource FontMain}"
+                                               FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding FormattedSize}"
+                                               FontFamily="{StaticResource FontMain}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextAccentBrush}"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,3,0,0"/>
+                                    <TextBlock FontFamily="{StaticResource FontMain}"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextMutedBrush}"
+                                               HorizontalAlignment="Center" Margin="0,2,0,0">
+                                        <Run Text="{Binding FileCount}"/>
+                                        <Run Text=" archivos"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

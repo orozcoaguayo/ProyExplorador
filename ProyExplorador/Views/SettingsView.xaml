@@ -1,0 +1,234 @@
+﻿<UserControl x:Class="ProyExplorador.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="Transparent"
+             d:DesignHeight="768" d:DesignWidth="1060">
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <ScrollViewer Style="{StaticResource MinimalScrollViewer}">
+        <StackPanel>
+
+            <!-- Hero -->
+            <Border MinHeight="110">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#0E0E18" Offset="0"/>
+                        <GradientStop Color="#141428" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel Margin="36,26,36,26">
+                    <TextBlock Text="Configuración"
+                               FontFamily="{StaticResource FontMain}"
+                               FontSize="24" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                    <TextBlock Text="Personaliza la apariencia y el comportamiento de la app."
+                               FontFamily="{StaticResource FontMain}"
+                               FontSize="13" Foreground="{StaticResource TextMutedBrush}"
+                               Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Margin="36,28,36,36" MaxWidth="700">
+
+                <!-- ── Apariencia ─────────────────────────────────── -->
+                <Border Background="{StaticResource BgCardBrush}"
+                        CornerRadius="14" BorderBrush="#10FFFFFF" BorderThickness="1"
+                        Padding="22,20" Margin="0,0,0,16">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#000" BlurRadius="16" ShadowDepth="2" Opacity="0.2"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,18">
+                            <Border Width="36" Height="36" CornerRadius="9" Margin="0,0,12,0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#207C6DFA" Offset="0"/>
+                                        <GradientStop Color="#203EC9C0" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <TextBlock Text="🎨" FontSize="18"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="Apariencia"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </DockPanel>
+
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Tema"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center"/>
+                            <ComboBox Grid.Column="1"
+                                      ItemsSource="{Binding AvailableThemes}"
+                                      SelectedItem="{Binding SelectedTheme}"
+                                      Style="{StaticResource ModernComboBox}"
+                                      Width="220" HorizontalAlignment="Left"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Idioma"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center"/>
+                            <ComboBox Grid.Column="1"
+                                      ItemsSource="{Binding AvailableLanguages}"
+                                      SelectedItem="{Binding SelectedLanguage}"
+                                      Style="{StaticResource ModernComboBox}"
+                                      Width="220" HorizontalAlignment="Left"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Vista por defecto"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <RadioButton Content="Detalles"
+                                             IsChecked="{Binding DefaultViewDetails}"
+                                             Foreground="{StaticResource TextPrimaryBrush}"
+                                             FontFamily="{StaticResource FontMain}"
+                                             FontSize="13" Margin="0,0,16,0"/>
+                                <RadioButton Content="Cuadrícula"
+                                             IsChecked="{Binding DefaultViewGrid}"
+                                             Foreground="{StaticResource TextPrimaryBrush}"
+                                             FontFamily="{StaticResource FontMain}"
+                                             FontSize="13"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- ── Comportamiento ────────────────────────────── -->
+                <Border Background="{StaticResource BgCardBrush}"
+                        CornerRadius="14" BorderBrush="#10FFFFFF" BorderThickness="1"
+                        Padding="22,20" Margin="0,0,0,16">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#000" BlurRadius="16" ShadowDepth="2" Opacity="0.2"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,18">
+                            <Border Width="36" Height="36" CornerRadius="9" Margin="0,0,12,0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#204AA8F0" Offset="0"/>
+                                        <GradientStop Color="#203EC9C0" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <TextBlock Text="⚙️" FontSize="18"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="Comportamiento"
+                                       FontFamily="{StaticResource FontMain}"
+                                       FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </DockPanel>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Mostrar archivos ocultos"
+                                           FontFamily="{StaticResource FontMain}"
+                                           FontSize="13" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Incluye archivos y carpetas del sistema"
+                                           FontFamily="{StaticResource FontMain}"
+                                           FontSize="11" Foreground="{StaticResource TextMutedBrush}"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <CheckBox Grid.Column="1"
+                                      IsChecked="{Binding ShowHiddenFiles}"
+                                      Style="{StaticResource ToggleSwitch}"
+                                      VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Mostrar extensiones"
+                                           FontFamily="{StaticResource FontMain}"
+                                           FontSize="13" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Muestra la extensión en el nombre del archivo"
+                                           FontFamily="{StaticResource FontMain}"
+                                           FontSize="11" Foreground="{StaticResource TextMutedBrush}"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <CheckBox Grid.Column="1"
+                                      IsChecked="{Binding ShowExtensions}"
+                                      Style="{StaticResource ToggleSwitch}"
+                                      VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Confirmar eliminaciones"
+                                           FontFamily="{StaticResource FontMain}"
+                                           FontSize="13" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Pide confirmación antes de eliminar"
+                                           FontFamily="{StaticResource FontMain}"
+                                           FontSize="11" Foreground="{StaticResource TextMutedBrush}"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <CheckBox Grid.Column="1"
+                                      IsChecked="{Binding ConfirmDelete}"
+                                      Style="{StaticResource ToggleSwitch}"
+                                      VerticalAlignment="Center"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Guardar -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                    <Button Content="Restablecer"
+                            Command="{Binding ResetSettingsCommand}"
+                            Style="{StaticResource BtnGhost}"
+                            Padding="16,10" FontSize="13" Margin="0,0,10,0"/>
+                    <Button Content="Guardar cambios"
+                            Command="{Binding SaveSettingsCommand}"
+                            Style="{StaticResource BtnPrimary}"
+                            Padding="20,10" FontSize="13"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,194 @@
+﻿<UserControl x:Class="ProyExplorador.Views.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="Transparent"
+             d:DesignHeight="768" d:DesignWidth="1060">
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ══ HERO SEARCH ══════════════════════════════════════════ -->
+        <Border Grid.Row="0" MinHeight="120">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#0E0E18" Offset="0"/>
+                    <GradientStop Color="#141428" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <StackPanel Margin="36,26,36,26">
+                <TextBlock Text="Búsqueda Avanzada"
+                           FontFamily="{StaticResource FontMain}"
+                           FontSize="24" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,0,0,16"/>
+
+                <!-- Barra principal -->
+                <Border Background="#16162A"
+                        CornerRadius="12"
+                        BorderBrush="{StaticResource AccentBrush}"
+                        BorderThickness="1.5"
+                        MaxWidth="680"
+                        HorizontalAlignment="Left">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#7C6DFA" BlurRadius="20" ShadowDepth="0" Opacity="0.2"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="42"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="🔍" FontSize="15"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" Opacity="0.7"/>
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="Transparent"
+                                 Foreground="{StaticResource TextPrimaryBrush}"
+                                 CaretBrush="{StaticResource AccentBrush}"
+                                 BorderThickness="0"
+                                 FontFamily="{StaticResource FontMain}"
+                                 FontSize="14"
+                                 Padding="0,12"
+                                 VerticalAlignment="Center">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding ExecuteSearchCommand}"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <Button Grid.Column="2"
+                                Content="Buscar"
+                                Command="{Binding ExecuteSearchCommand}"
+                                Style="{StaticResource BtnPrimary}"
+                                Padding="20,10" Margin="6"
+                                FontSize="13"/>
+                    </Grid>
+                </Border>
+
+                <!-- Filtros -->
+                <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                    <TextBlock Text="Extensión:"
+                               FontFamily="{StaticResource FontMain}"
+                               FontSize="12"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox Text="{Binding FilterExtension, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource ModernTextBox}"
+                             Width="120" Padding="10,6" FontSize="12"
+                             VerticalAlignment="Center"/>
+                    <TextBlock Text="Ruta raíz:"
+                               FontFamily="{StaticResource FontMain}"
+                               FontSize="12"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               VerticalAlignment="Center" Margin="18,0,8,0"/>
+                    <TextBox Text="{Binding RootPath, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource ModernTextBox}"
+                             Width="220" Padding="10,6" FontSize="12"
+                             VerticalAlignment="Center"/>
+                    <Button Content="✕ Limpiar"
+                            Command="{Binding ClearResultsCommand}"
+                            Style="{StaticResource BtnGhost}"
+                            Padding="10,6" FontSize="12" Margin="14,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Separador -->
+        <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="Transparent" Offset="0"/>
+                    <GradientStop Color="#25253A"     Offset="0.3"/>
+                    <GradientStop Color="#25253A"     Offset="0.7"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <!-- ══ RESULTADOS ═══════════════════════════════════════════ -->
+        <Grid Grid.Row="1" Margin="32,16,32,24">
+            <!-- Encabezado resultados -->
+            <DockPanel VerticalAlignment="Top" Margin="0,0,0,12">
+                <Border Style="{StaticResource BadgeAccent}" DockPanel.Dock="Left">
+                    <TextBlock FontFamily="{StaticResource FontMain}" FontSize="11"
+                               Foreground="{StaticResource TextAccentBrush}">
+                        <Run Text="{Binding ResultCount, Mode=OneWay}"/>
+                        <Run Text=" resultados"/>
+                    </TextBlock>
+                </Border>
+            </DockPanel>
+
+            <!-- Lista de resultados -->
+            <ListView ItemsSource="{Binding Results}"
+                      Style="{StaticResource ModernListView}"
+                      Margin="0,38,0,0"
+                      Padding="0,4">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="34">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Icon}" FontSize="15"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Nombre"   Width="280"
+                                        DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Tipo"     Width="110"
+                                        DisplayMemberBinding="{Binding ItemType}"/>
+                        <GridViewColumn Header="Tamaño"   Width="90"
+                                        DisplayMemberBinding="{Binding FormattedSize}"/>
+                        <GridViewColumn Header="Ruta"     Width="320"
+                                        DisplayMemberBinding="{Binding FullPath}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Estado vacío -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,60,0,0">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Results.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <TextBlock Text="🔍" FontSize="56" HorizontalAlignment="Center" Opacity="0.2"/>
+                <TextBlock Text="Escribe algo y presiona Enter"
+                           FontFamily="{StaticResource FontMain}"
+                           FontSize="15" Foreground="{StaticResource TextMutedBrush}"
+                           HorizontalAlignment="Center" Margin="0,12,0,0"/>
+            </StackPanel>
+
+            <!-- Busy overlay -->
+            <Border Background="#AA000000"
+                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Text="Buscando..." FontFamily="{StaticResource FontMain}"
+                           FontSize="14" Foreground="{StaticResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
