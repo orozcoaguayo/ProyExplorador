@@ -1,10 +1,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Spreadsheet;
 using ProyExplorador.Services;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
+using A = DocumentFormat.OpenXml.Drawing;
 
 namespace ProyExplorador.ViewModels
 {
@@ -20,12 +25,13 @@ namespace ProyExplorador.ViewModels
         [ObservableProperty] private string  _fileName      = "Sin archivo";
         [ObservableProperty] private string  _fileExtension = string.Empty;
         [ObservableProperty] private string  _rawContent    = string.Empty;
-        [ObservableProperty] private string  _fileType      = "none";  // txt | json | xml | csv
+        [ObservableProperty] private string  _fileType      = "none";  // txt | json | xml | csv | office
         [ObservableProperty] private string  _errorMessage  = string.Empty;
         [ObservableProperty] private long    _fileSize;
         [ObservableProperty] private int     _lineCount;
         [ObservableProperty] private bool    _hasContent;
         [ObservableProperty] private string  _prettyJson    = string.Empty;
+        [ObservableProperty] private string  _imagePath     = string.Empty;
 
         /// <summary>Columnas del CSV para el DataGrid.</summary>
         public ObservableCollection<string>                    CsvHeaders { get; } = [];
@@ -45,8 +51,8 @@ namespace ProyExplorador.ViewModels
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title  = "Abrir archivo de texto",
-                Filter = "Texto|*.txt;*.log|JSON|*.json|XML|*.xml|CSV|*.csv|Todos|*.*"
+                Title  = "Abrir archivo",
+                Filter = "Todos compatibles|*.txt;*.log;*.json;*.xml;*.csv;*.docx;*.xlsx;*.pptx;*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.webp;*.tiff|Texto|*.txt;*.log|JSON|*.json|XML|*.xml|CSV|*.csv|Word|*.docx|Excel|*.xlsx|PowerPoint|*.pptx|Imágenes|*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.webp;*.tiff|Todos|*.*"
             };
 
             if (dialog.ShowDialog() != true) return;
@@ -70,26 +76,42 @@ namespace ProyExplorador.ViewModels
                 FileExtension = Path.GetExtension(path).ToLowerInvariant();
                 FileSize      = new FileInfo(path).Length;
 
-                var content = await _fileService.ReadTextFileAsync(path);
-                RawContent  = content;
-                LineCount   = content.Split('\n').Length;
-                HasContent  = !string.IsNullOrEmpty(content);
-
-                FileType = FileExtension switch
+                if (FileExtension is ".docx" or ".xlsx" or ".pptx")
                 {
-                    ".json"         => "json",
-                    ".xml"          => "xml",
-                    ".csv"          => "csv",
-                    ".txt" or ".log" or ".md" => "txt",
-                    _               => "txt"
-                };
-
-                // Procesar según tipo
-                switch (FileType)
+                    FileType   = "office";
+                    RawContent = await ParseOfficeAsync(path);
+                    LineCount  = RawContent.Split('\n').Length;
+                    HasContent = !string.IsNullOrEmpty(RawContent);
+                }
+                else if (FileExtension is ".png" or ".jpg" or ".jpeg" or ".gif" or ".bmp" or ".webp" or ".tiff" or ".tif")
                 {
-                    case "json": await ParseJsonAsync(content); break;
-                    case "xml":  await ParseXmlAsync(content);  break;
-                    case "csv":  await ParseCsvAsync(content);  break;
+                    FileType  = "image";
+                    ImagePath = path;
+                    LineCount = 0;
+                    HasContent = true;
+                }
+                else
+                {
+                    var content = await _fileService.ReadTextFileAsync(path);
+                    RawContent  = content;
+                    LineCount   = content.Split('\n').Length;
+                    HasContent  = !string.IsNullOrEmpty(content);
+
+                    FileType = FileExtension switch
+                    {
+                        ".json"          => "json",
+                        ".xml"           => "xml",
+                        ".csv"           => "csv",
+                        ".txt" or ".log" or ".md" => "txt",
+                        _                => "txt"
+                    };
+
+                    switch (FileType)
+                    {
+                        case "json": await ParseJsonAsync(content); break;
+                        case "xml":  await ParseXmlAsync(content);  break;
+                        case "csv":  await ParseCsvAsync(content);  break;
+                    }
                 }
             }
             catch (Exception ex)
@@ -101,6 +123,92 @@ namespace ProyExplorador.ViewModels
             {
                 SetBusy(false);
             }
+        }
+
+        // ── Parser Office (docx / xlsx / pptx) ──────────────────────────────
+
+        private static Task<string> ParseOfficeAsync(string path)
+        {
+            return Task.Run(() =>
+            {
+                var ext = Path.GetExtension(path).ToLowerInvariant();
+                return ext switch
+                {
+                    ".docx" => ReadDocx(path),
+                    ".xlsx" => ReadXlsx(path),
+                    ".pptx" => ReadPptx(path),
+                    _       => string.Empty
+                };
+            });
+        }
+
+        private static string ReadDocx(string path)
+        {
+            var sb = new StringBuilder();
+            using var doc = WordprocessingDocument.Open(path, false);
+            var body = doc.MainDocumentPart?.Document?.Body;
+            if (body is null) return string.Empty;
+            foreach (var para in body.Descendants<DocumentFormat.OpenXml.Wordprocessing.Paragraph>())
+            {
+                sb.AppendLine(para.InnerText);
+            }
+            return sb.ToString();
+        }
+
+        private static string ReadXlsx(string path)
+        {
+            var sb = new StringBuilder();
+            using var doc = SpreadsheetDocument.Open(path, false);
+            var workbook = doc.WorkbookPart;
+            if (workbook is null) return string.Empty;
+
+            var sharedStrings = workbook.SharedStringTablePart?.SharedStringTable
+                                        .Elements<SharedStringItem>()
+                                        .Select(s => s.InnerText)
+                                        .ToArray() ?? [];
+
+            foreach (var sheet in workbook.Workbook.Descendants<Sheet>())
+            {
+                sb.AppendLine($"=== {sheet.Name} ===");
+                if (workbook.GetPartById(sheet.Id!) is not WorksheetPart wsPart) continue;
+                var rows = wsPart.Worksheet.Descendants<Row>();
+                foreach (var row in rows)
+                {
+                    var cells = row.Descendants<Cell>()
+                                   .Select(c =>
+                                   {
+                                       if (c.DataType?.Value == CellValues.SharedString &&
+                                           int.TryParse(c.InnerText, out int idx) &&
+                                           idx < sharedStrings.Length)
+                                           return sharedStrings[idx];
+                                       return c.InnerText;
+                                   });
+                    sb.AppendLine(string.Join("\t", cells));
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        private static string ReadPptx(string path)
+        {
+            var sb = new StringBuilder();
+            using var doc = PresentationDocument.Open(path, false);
+            var pres = doc.PresentationPart;
+            if (pres is null) return string.Empty;
+
+            int slideNum = 1;
+            foreach (var slideId in pres.Presentation.SlideIdList?.OfType<SlideId>() ?? [])
+            {
+                if (pres.GetPartById(slideId.RelationshipId!) is not SlidePart slidePart) continue;
+                sb.AppendLine($"--- Diapositiva {slideNum++} ---");
+                var texts = slidePart.Slide.Descendants<A.Paragraph>()
+                                     .Select(p => p.InnerText)
+                                     .Where(t => !string.IsNullOrWhiteSpace(t));
+                foreach (var t in texts) sb.AppendLine(t);
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
 
         // ── Parsers ───────────────────────────────────────────────────────
@@ -293,7 +401,9 @@ namespace ProyExplorador.ViewModels
             FileExtension = string.Empty;
             RawContent    = string.Empty;
             PrettyJson    = string.Empty;
+            ImagePath     = string.Empty;
             FileType      = "none";
+            LineCount     = 0;
             HasContent    = false;
             ErrorMessage  = string.Empty;
             ClearCollections();

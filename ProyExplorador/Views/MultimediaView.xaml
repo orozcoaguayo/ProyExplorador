@@ -21,8 +21,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="290"/>
+            <ColumnDefinition Width="*" MinWidth="300"/>
+            <ColumnDefinition Width="280" MinWidth="240" MaxWidth="320"/>
         </Grid.ColumnDefinitions>
 
         <!-- ══ REPRODUCTOR (izquierda) ═══════════════════════════════ -->
@@ -162,11 +162,11 @@
                         <Slider Minimum="0" Maximum="1"
                                 Value="{Binding Volume, Mode=TwoWay}"
                                 Style="{StaticResource MediaSlider}"
-                                Width="110" VerticalAlignment="Center"/>
+                                MinWidth="90" Width="110" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding Volume, StringFormat='{}{0:P0}'}"
                                    FontFamily="{StaticResource FontMain}"
                                    FontSize="11" Foreground="{StaticResource TextMutedBrush}"
-                                   VerticalAlignment="Center" Margin="8,0,0,0" Width="34"/>
+                                   VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="32"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -235,24 +235,27 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Icon}"
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Icon}"
                                                    FontSize="16" VerticalAlignment="Center"
                                                    Margin="0,0,10,0" Width="22"/>
-                                        <StackPanel VerticalAlignment="Center">
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" MinWidth="0">
                                             <TextBlock Text="{Binding Name}"
                                                        FontFamily="{StaticResource FontMain}"
                                                        FontSize="12"
                                                        Foreground="{StaticResource TextPrimaryBrush}"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       MaxWidth="200"/>
+                                                       TextTrimming="CharacterEllipsis"/>
                                             <TextBlock Text="{Binding FormattedSize}"
                                                        FontFamily="{StaticResource FontMain}"
                                                        FontSize="10"
                                                        Foreground="{StaticResource TextMutedBrush}"
                                                        Margin="0,2,0,0"/>
                                         </StackPanel>
-                                    </StackPanel>
+                                    </Grid>
                                 </Border>
                             </Button>
                         </DataTemplate>

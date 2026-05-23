@@ -29,7 +29,7 @@
     <!--  Texto  -->
     <Color x:Key="TextPrimaryColor">#F2F2F8</Color>
     <Color x:Key="TextSecondaryColor">#9898B0</Color>
-    <Color x:Key="TextMutedColor">#4A4A60</Color>
+    <Color x:Key="TextMutedColor">#6A6A82</Color>
     <Color x:Key="TextAccentColor">#A89FFC</Color>
 
     <!--  Bordes  -->
@@ -131,5 +131,14 @@
     <Thickness x:Key="PaddingMD">16,11</Thickness>
     <Thickness x:Key="PaddingLG">22,16</Thickness>
     <Thickness x:Key="CardPadding">20,18</Thickness>
+
+    <!-- Margin / gap tokens  (Small=8  Medium=12  Large=16  XL=24  Section=28) -->
+    <Thickness x:Key="MarginSM">8</Thickness>
+    <Thickness x:Key="MarginMD">12</Thickness>
+    <Thickness x:Key="MarginLG">16</Thickness>
+    <Thickness x:Key="MarginXL">24</Thickness>
+    <Thickness x:Key="MarginSection">28,24,28,28</Thickness>
+    <Thickness x:Key="CardGap">0,0,12,12</Thickness>
+    <Thickness x:Key="CardGapLast">0,0,0,12</Thickness>
 
 </ResourceDictionary>

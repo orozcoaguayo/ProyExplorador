@@ -13,7 +13,9 @@
         Background="Transparent"
         WindowStyle="None"
         AllowsTransparency="True"
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="CanResizeWithGrip"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
@@ -72,7 +74,7 @@
                 </Border.Background>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition Width="220" MinWidth="200"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
@@ -108,8 +110,10 @@
                             CornerRadius="9"
                             BorderBrush="#1CFFFFFF"
                             BorderThickness="1"
-                            Margin="0,8"
-                            MaxWidth="440">
+                            Margin="12,8"
+                            MaxWidth="480"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="34"/>
@@ -196,7 +200,7 @@
             ══════════════════════════════════════════════════════ -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="228"/>
+                    <ColumnDefinition Width="220" MinWidth="200"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -219,8 +223,12 @@
                         <!-- Nav items -->
                         <ScrollViewer Grid.Row="0"
                                       Style="{StaticResource MinimalScrollViewer}"
-                                      Padding="0,16,0,8">
-                            <ItemsControl ItemsSource="{Binding NavItems}">
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      Padding="0,12,0,8">
+                            <ItemsControl ItemsSource="{Binding NavItems}"
+                                          HorizontalAlignment="Stretch"
+                                          HorizontalContentAlignment="Stretch">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding DataContext.NavigateCommand,
@@ -231,9 +239,10 @@
                                             <Button.Template>
                                                 <ControlTemplate TargetType="Button">
                                                     <Border x:Name="Root"
-                                                            CornerRadius="10"
-                                                            Margin="10,2"
-                                                            Padding="12,10">
+                                                                            CornerRadius="10"
+                                                                            Margin="8,2"
+                                                                            Padding="10,9"
+                                                                            ClipToBounds="False">
                                                         <Border.Background>
                                                             <SolidColorBrush x:Name="RootBg" Color="Transparent"/>
                                                         </Border.Background>
@@ -243,18 +252,18 @@
                                                                     Width="3"
                                                                     CornerRadius="0,3,3,0"
                                                                     HorizontalAlignment="Left"
-                                                                    Margin="-12,6,0,6">
-                                                                
-                                                            </Border>
+                                                                    VerticalAlignment="Stretch"
+                                                                    Margin="-10,4,0,4"
+                                                                    Background="Transparent"/>
 
-                                                            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                                            <StackPanel Orientation="Horizontal" Margin="8,0,0,0">
                                                                 <!-- Icono con fondo suave si activo -->
                                                                 <Border x:Name="IconWrap"
-                                                                        Width="28" Height="28"
+                                                                        Width="26" Height="26"
                                                                         CornerRadius="7"
                                                                         Background="Transparent">
                                                                     <TextBlock Text="{Binding Icon}"
-                                                                               FontSize="15"
+                                                                               FontSize="14"
                                                                                HorizontalAlignment="Center"
                                                                                VerticalAlignment="Center"/>
                                                                 </Border>
@@ -263,8 +272,9 @@
                                                                            FontFamily="{StaticResource FontMain}"
                                                                            FontSize="13"
                                                                            VerticalAlignment="Center"
-                                                                           Margin="10,0,0,0"
-                                                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                                           Margin="10,0,6,0"
+                                                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
                                                             </StackPanel>
                                                         </Grid>
                                                     </Border>
@@ -295,10 +305,10 @@
 
                         <!-- Footer del sidebar -->
                         <Border Grid.Row="1"
-                                Padding="14,12"
+                                Padding="12,11"
                                 BorderBrush="#12FFFFFF"
                                 BorderThickness="0,1,0,0">
-                            <DockPanel>
+                            <DockPanel LastChildFill="True">
                                 <!-- Avatar con gradiente -->
                                 <Border Width="34" Height="34" CornerRadius="17" Margin="0,0,10,0">
                                     <Border.Background>
@@ -312,12 +322,13 @@
                                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                                FontFamily="{StaticResource FontMain}"/>
                                 </Border>
-                                <StackPanel VerticalAlignment="Center">
+                                <StackPanel VerticalAlignment="Center" MinWidth="0">
                                     <TextBlock Text="{Binding UserName}"
                                                Foreground="{StaticResource TextPrimaryBrush}"
                                                FontFamily="{StaticResource FontMain}"
                                                FontSize="12" FontWeight="Medium"
-                                               TextTrimming="CharacterEllipsis" MaxWidth="130"/>
+                                               TextTrimming="CharacterEllipsis"
+                                               MaxWidth="140"/>
                                     <TextBlock Text=".NET 8 · WPF"
                                                Foreground="{StaticResource TextMutedBrush}"
                                                FontFamily="{StaticResource FontMain}"
@@ -348,12 +359,18 @@
                         <!-- Vista actual — transición por código -->
                         <ContentControl x:Name="MainContent"
                                         Content="{Binding CurrentViewModel}"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
                                         Focusable="False"/>
 
                         <!-- Loading overlay global -->
                         <Border x:Name="LoadingOverlay"
                                 Background="#B0000000"
                                 CornerRadius="0,0,14,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
                                 Visibility="{Binding CurrentViewModel.IsBusy,
                                     Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">

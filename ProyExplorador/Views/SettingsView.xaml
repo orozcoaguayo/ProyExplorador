@@ -42,7 +42,7 @@
                 </StackPanel>
             </Border>
 
-            <StackPanel Margin="36,28,36,36" MaxWidth="700">
+            <StackPanel Margin="28,24,28,28" MaxWidth="760">
 
                 <!-- ── Apariencia ─────────────────────────────────── -->
                 <Border Background="{StaticResource BgCardBrush}"
@@ -73,45 +73,45 @@
 
                         <Grid Margin="0,0,0,14">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="Auto" MinWidth="150"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Tema"
                                        FontFamily="{StaticResource FontMain}"
                                        FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center" Margin="0,0,16,0"/>
                             <ComboBox Grid.Column="1"
                                       ItemsSource="{Binding AvailableThemes}"
                                       SelectedItem="{Binding SelectedTheme}"
                                       Style="{StaticResource ModernComboBox}"
-                                      Width="220" HorizontalAlignment="Left"/>
+                                      MaxWidth="280"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,14">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="Auto" MinWidth="150"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Idioma"
                                        FontFamily="{StaticResource FontMain}"
                                        FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center" Margin="0,0,16,0"/>
                             <ComboBox Grid.Column="1"
                                       ItemsSource="{Binding AvailableLanguages}"
                                       SelectedItem="{Binding SelectedLanguage}"
                                       Style="{StaticResource ModernComboBox}"
-                                      Width="220" HorizontalAlignment="Left"/>
+                                      MaxWidth="280"/>
                         </Grid>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="Auto" MinWidth="150"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Vista por defecto"
                                        FontFamily="{StaticResource FontMain}"
                                        FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center" Margin="0,0,16,0"/>
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <RadioButton Content="Detalles"
                                              IsChecked="{Binding DefaultViewDetails}"

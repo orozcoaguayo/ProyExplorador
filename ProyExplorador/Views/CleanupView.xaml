@@ -43,7 +43,7 @@
                 </StackPanel>
             </Border>
 
-            <StackPanel Margin="36,28,36,36">
+            <StackPanel Margin="28,24,28,28">
 
                 <!-- ── PROGRESO ACTIVO ─────────────────────────────── -->
                 <Border Background="{StaticResource BgCardBrush}"
@@ -75,10 +75,10 @@
                 </Border>
 
                 <!-- ── TARJETAS DE LIMPIEZA ───────────────────────── -->
-                <WrapPanel>
+                <UniformGrid Columns="2" Margin="0,0,0,16">
 
                     <!-- Temporales -->
-                    <Border Width="300" Margin="0,0,20,20"
+                    <Border MinWidth="220" Margin="0,0,10,10"
                             Background="{StaticResource BgCardBrush}"
                             CornerRadius="14" BorderBrush="#10FFFFFF" BorderThickness="1"
                             Padding="22,20">
@@ -130,7 +130,7 @@
                     </Border>
 
                     <!-- Papelera -->
-                    <Border Width="300" Margin="0,0,20,20"
+                    <Border MinWidth="220" Margin="10,0,0,10"
                             Background="{StaticResource BgCardBrush}"
                             CornerRadius="14" BorderBrush="#10FFFFFF" BorderThickness="1"
                             Padding="22,20">
@@ -168,7 +168,7 @@
                                     HorizontalAlignment="Left"/>
                         </StackPanel>
                     </Border>
-                </WrapPanel>
+                </UniformGrid>
 
                 <!-- Resultado -->
                 <Border Background="{StaticResource BgCardBrush}"

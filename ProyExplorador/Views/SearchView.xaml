@@ -33,7 +33,7 @@
                     <GradientStop Color="#141428" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <StackPanel Margin="36,26,36,26">
+            <StackPanel Margin="28,22,28,22">
                 <TextBlock Text="Búsqueda Avanzada"
                            FontFamily="{StaticResource FontMain}"
                            FontSize="24" FontWeight="Bold"
@@ -44,9 +44,7 @@
                 <Border Background="#16162A"
                         CornerRadius="12"
                         BorderBrush="{StaticResource AccentBrush}"
-                        BorderThickness="1.5"
-                        MaxWidth="680"
-                        HorizontalAlignment="Left">
+                        BorderThickness="1.5">
                     <Border.Effect>
                         <DropShadowEffect Color="#7C6DFA" BlurRadius="20" ShadowDepth="0" Opacity="0.2"/>
                     </Border.Effect>
@@ -83,30 +81,39 @@
                 </Border>
 
                 <!-- Filtros -->
-                <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                    <TextBlock Text="Extensión:"
+                <Grid Margin="0,12,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="120" MaxWidth="160"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Extensión:"
                                FontFamily="{StaticResource FontMain}"
                                FontSize="12"
                                Foreground="{StaticResource TextMutedBrush}"
                                VerticalAlignment="Center" Margin="0,0,8,0"/>
-                    <TextBox Text="{Binding FilterExtension, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Grid.Column="1"
+                             Text="{Binding FilterExtension, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ModernTextBox}"
-                             Width="120" Padding="10,6" FontSize="12"
+                             Padding="10,6" FontSize="12"
                              VerticalAlignment="Center"/>
-                    <TextBlock Text="Ruta raíz:"
+                    <TextBlock Grid.Column="2" Text="Ruta raíz:"
                                FontFamily="{StaticResource FontMain}"
                                FontSize="12"
                                Foreground="{StaticResource TextMutedBrush}"
-                               VerticalAlignment="Center" Margin="18,0,8,0"/>
-                    <TextBox Text="{Binding RootPath, UpdateSourceTrigger=PropertyChanged}"
+                               VerticalAlignment="Center" Margin="14,0,8,0"/>
+                    <TextBox Grid.Column="3"
+                             Text="{Binding RootPath, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ModernTextBox}"
-                             Width="220" Padding="10,6" FontSize="12"
+                             Padding="10,6" FontSize="12"
                              VerticalAlignment="Center"/>
-                    <Button Content="✕ Limpiar"
+                    <Button Grid.Column="4" Content="✕ Limpiar"
                             Command="{Binding ClearResultsCommand}"
                             Style="{StaticResource BtnGhost}"
-                            Padding="10,6" FontSize="12" Margin="14,0,0,0"/>
-                </StackPanel>
+                            Padding="10,6" FontSize="12" Margin="10,0,0,0"/>
+                </Grid>
             </StackPanel>
         </Border>
 
@@ -123,9 +130,14 @@
         </Rectangle>
 
         <!-- ══ RESULTADOS ═══════════════════════════════════════════ -->
-        <Grid Grid.Row="1" Margin="32,16,32,24">
+        <Grid Grid.Row="1" Margin="28,16,28,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
             <!-- Encabezado resultados -->
-            <DockPanel VerticalAlignment="Top" Margin="0,0,0,12">
+            <DockPanel Grid.Row="0" Margin="0,0,0,10">
                 <Border Style="{StaticResource BadgeAccent}" DockPanel.Dock="Left">
                     <TextBlock FontFamily="{StaticResource FontMain}" FontSize="11"
                                Foreground="{StaticResource TextAccentBrush}">
@@ -136,9 +148,9 @@
             </DockPanel>
 
             <!-- Lista de resultados -->
-            <ListView ItemsSource="{Binding Results}"
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding Results}"
                       Style="{StaticResource ModernListView}"
-                      Margin="0,38,0,0"
                       Padding="0,4">
                 <ListView.View>
                     <GridView>
@@ -164,7 +176,7 @@
             </ListView>
 
             <!-- Estado vacío -->
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,60,0,0">
+            <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -183,7 +195,8 @@
             </StackPanel>
 
             <!-- Busy overlay -->
-            <Border Background="#AA000000"
+            <Border Grid.Row="1"
+                    Background="#AA000000"
                     Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBlock Text="Buscando..." FontFamily="{StaticResource FontMain}"
                            FontSize="14" Foreground="{StaticResource TextSecondaryBrush}"

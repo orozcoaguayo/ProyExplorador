@@ -53,12 +53,12 @@
                 </Grid>
             </Border>
 
-            <StackPanel Margin="36,28,36,36">
+            <StackPanel Margin="28,24,28,28">
 
                 <!-- ── KPI CARDS ──────────────────────────────────── -->
                 <WrapPanel Margin="0,0,0,24">
                     <!-- Total -->
-                    <Border Width="200" Margin="0,0,16,16"
+                    <Border MinWidth="175" Margin="0,0,16,16"
                             CornerRadius="13" BorderBrush="#10FFFFFF" BorderThickness="1"
                             Padding="18,16">
                         <Border.Background>
@@ -82,7 +82,7 @@
                         </StackPanel>
                     </Border>
                     <!-- Libre -->
-                    <Border Width="200" Margin="0,0,16,16"
+                    <Border MinWidth="175" Margin="0,0,16,16"
                             CornerRadius="13" BorderBrush="#10FFFFFF" BorderThickness="1"
                             Padding="18,16">
                         <Border.Background>
@@ -106,7 +106,7 @@
                         </StackPanel>
                     </Border>
                     <!-- Uso -->
-                    <Border Width="200" Margin="0,0,16,16"
+                    <Border MinWidth="175" Margin="0,0,16,16"
                             CornerRadius="13" BorderBrush="#10FFFFFF" BorderThickness="1"
                             Padding="18,16">
                         <Border.Background>
@@ -143,7 +143,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Width="260" Margin="0,0,16,16"
+                            <Border MinWidth="220" Margin="0,0,16,16"
                                     Background="{StaticResource BgCardBrush}"
                                     CornerRadius="14" BorderBrush="#0EFFFFFF" BorderThickness="1"
                                     Padding="18,16">
@@ -199,7 +199,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Width="180" Margin="0,0,12,12"
+                            <Border MinWidth="155" Width="180" Margin="0,0,12,12"
                                     Background="{StaticResource BgCardBrush}"
                                     CornerRadius="12" BorderBrush="#0AFFFFFF" BorderThickness="1"
                                     Padding="16,14">

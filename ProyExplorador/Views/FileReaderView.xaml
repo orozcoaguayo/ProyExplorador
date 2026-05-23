@@ -80,7 +80,7 @@
                            Style="{StaticResource SubtitleText}"
                            HorizontalAlignment="Center"
                            Margin="0,16,0,8" Opacity="0.5"/>
-                <TextBlock Text="Soporta TXT · JSON · XML · CSV"
+                <TextBlock Text="Soporta TXT · JSON · XML · CSV · DOCX · XLSX · PPTX · PNG · JPG · GIF · BMP"
                            Style="{StaticResource BodyText}"
                            HorizontalAlignment="Center"
                            Opacity="0.35"/>
@@ -384,6 +384,101 @@
                     </Grid>
                 </ScrollViewer>
             </Border>
+
+            <!-- ── IMAGE (png / jpg / gif / bmp / webp / tiff) ─────────── -->
+            <Grid Visibility="{Binding FileType,
+                      Converter={StaticResource ViewModeToVisibilityConverter},
+                      ConverterParameter=image}"
+                  Background="{StaticResource BgPrimaryBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Barra info imagen -->
+                <Border Grid.Row="0"
+                        Background="{StaticResource BgSecondaryBrush}"
+                        Padding="16,8"
+                        BorderBrush="{StaticResource SeparatorBrush}"
+                        BorderThickness="0,0,0,1">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FileExtension}"
+                                   Foreground="{StaticResource AccentBrush}"
+                                   FontFamily="{StaticResource FontMono}"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="  —  "
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontFamily="{StaticResource FontMain}"
+                                   FontSize="11" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding FileSize, Converter={StaticResource FileSizeConverter}}"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontFamily="{StaticResource FontMain}"
+                                   FontSize="11" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Imagen centrada con scroll -->
+                <ScrollViewer Grid.Row="1"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto"
+                              Style="{StaticResource MinimalScrollViewer}">
+                    <Image Source="{Binding ImagePath}"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="24"/>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- ── OFFICE (docx / xlsx / pptx) ──────────────────────── -->
+            <Grid Visibility="{Binding FileType,
+                      Converter={StaticResource ViewModeToVisibilityConverter},
+                      ConverterParameter=office}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"
+                        Background="{StaticResource BgSecondaryBrush}"
+                        Padding="16,8"
+                        BorderBrush="{StaticResource SeparatorBrush}"
+                        BorderThickness="0,0,0,1">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FileExtension}"
+                                   Foreground="{StaticResource AccentBrush}"
+                                   FontFamily="{StaticResource FontMono}"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="  —  Contenido extraído (solo texto)"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontFamily="{StaticResource FontMain}"
+                                   FontSize="11"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <ScrollViewer Grid.Row="1"
+                              Style="{StaticResource MinimalScrollViewer}"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <TextBox Text="{Binding RawContent, Mode=OneWay}"
+                             IsReadOnly="True"
+                             Background="Transparent"
+                             Foreground="{StaticResource TextPrimaryBrush}"
+                             CaretBrush="Transparent"
+                             BorderThickness="0"
+                             FontFamily="{StaticResource FontMain}"
+                             FontSize="13"
+                             Padding="24,16"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             SelectionBrush="{StaticResource AccentBrush}"
+                             SelectionOpacity="0.3"
+                             VerticalScrollBarVisibility="Hidden"
+                             HorizontalScrollBarVisibility="Hidden"/>
+                </ScrollViewer>
+            </Grid>
 
             <!-- ── ERROR ─────────────────────────────────────────────── -->
             <StackPanel VerticalAlignment="Center"
