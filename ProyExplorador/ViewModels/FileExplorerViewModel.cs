@@ -61,7 +61,7 @@ namespace ProyExplorador.ViewModels
         ];
 
         private static readonly HashSet<string> TextExtensions =
-            new([".txt", ".log", ".md", ".json", ".xml", ".csv", ".ini", ".cfg", ".yaml", ".yml"],
+            new([".txt", ".log", ".md", ".json", ".xml", ".ini", ".cfg", ".yaml", ".yml"],
                 StringComparer.OrdinalIgnoreCase);
 
         public FileExplorerViewModel(
@@ -149,16 +149,26 @@ namespace ProyExplorador.ViewModels
             if (item.IsDirectory)
             {
                 await NavigateToAsync(item.FullPath);
+                return;
             }
-            else if (TextExtensions.Contains(item.Extension))
+
+            // Archivos con visor interno de texto
+            if (TextExtensions.Contains(item.Extension))
             {
                 await _fileReader.LoadFileAsync(item.FullPath);
                 _navigation.NavigateTo("FileReader");
+                return;
             }
-            else
+
+            // Office, PDF, imágenes, vídeo → app nativa de Windows
+            if (FileOpenerService.ShouldOpenNatively(item.Extension))
             {
-                await _fileService.OpenFileAsync(item.FullPath);
+                await Task.Run(() => FileOpenerService.OpenWithDefaultApp(item.FullPath));
+                return;
             }
+
+            // Resto → shell genérico (fallback del servicio existente)
+            await _fileService.OpenFileAsync(item.FullPath);
         }
 
         [RelayCommand]

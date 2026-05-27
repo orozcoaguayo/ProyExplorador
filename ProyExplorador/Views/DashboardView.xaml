@@ -22,6 +22,7 @@
 
     <ScrollViewer Style="{StaticResource MinimalScrollViewer}" Padding="0"
                   VerticalScrollBarVisibility="Auto"
+                  CanContentScroll="False"
                   HorizontalScrollBarVisibility="Disabled">
         <Grid>
 
@@ -107,57 +108,72 @@
                                FontSize="15"/>
                 </DockPanel>
 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding QuickAccesses}">
+                <ItemsControl Grid.Row="1"
+                              ItemsSource="{Binding QuickAccesses}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Margin" Value="0,0,12,12"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Command="{Binding DataContext.OpenFolderCommand,
-                                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                            CommandParameter="{Binding Path}"
-                                            Cursor="Hand"
-                                            Margin="0,0,10,10"
-                                            Padding="0"
-                                            MinWidth="148"
-                                            Background="Transparent"
-                                            BorderThickness="0">
-                                        <Border MinHeight="100" MinWidth="148"
-                                                                Background="{StaticResource BgCardBrush}"
-                                                                CornerRadius="13"
-                                                                BorderBrush="#12FFFFFF"
-                                                                BorderThickness="1"
-                                                                Padding="14,14">
-                                                            <Border.Style>
-                                                                <Style TargetType="Border">
-                                                                    <Style.Triggers>
-                                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                                            <Setter Property="Background" Value="{StaticResource BgHoverBrush}"/>
-                                                                        </Trigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Border.Style>
-                                                            <Border.Effect>
-                                                                <DropShadowEffect Color="#000" BlurRadius="18" ShadowDepth="2" Opacity="0.28"/>
-                                                            </Border.Effect>
-                                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding Icon}"
-                                                                           FontSize="30"
-                                                                           HorizontalAlignment="Center"/>
-                                                                <TextBlock Text="{Binding Name}"
-                                                                           FontFamily="{StaticResource FontMain}"
-                                                                           FontSize="12"
-                                                                           Foreground="{StaticResource TextSecondaryBrush}"
-                                                                           HorizontalAlignment="Center"
-                                                                           TextAlignment="Center"
-                                                                           TextWrapping="Wrap"
-                                                                           TextTrimming="None"
-                                                                           Margin="0,8,0,0"/>
-                                                            </StackPanel>
-                                                        </Border>
-                                    </Button>
+                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding Path}"
+                                    Cursor="Hand"
+                                    MinWidth="160"
+                                    MinHeight="130">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="CardBorder"
+                                                MinWidth="160"
+                                                MinHeight="130"
+                                                Background="{StaticResource BgCardBrush}"
+                                                CornerRadius="14"
+                                                BorderBrush="Red"
+                                                BorderThickness="1"
+                                                Padding="16"
+                                                SnapsToDevicePixels="True">
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="#000" BlurRadius="10" ShadowDepth="1" Opacity="0.28"/>
+                                            </Border.Effect>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Grid.Row="0"
+                                                           Text="{Binding Icon}"
+                                                           FontSize="24"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Row="1"
+                                                           Text="{Binding Name}"
+                                                           FontFamily="{StaticResource FontMain}"
+                                                           FontSize="12"
+                                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                                           HorizontalAlignment="Center"
+                                                           TextAlignment="Center"
+                                                           TextWrapping="Wrap"
+                                                           Margin="0,12,0,0"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="CardBorder" Property="Background" Value="{StaticResource BgHoverBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="CardBorder" Property="Opacity" Value="0.85"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

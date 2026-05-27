@@ -308,7 +308,17 @@
                                 Padding="12,11"
                                 BorderBrush="#12FFFFFF"
                                 BorderThickness="0,1,0,0">
-                            <DockPanel LastChildFill="True">
+                            <StackPanel>
+                                <!-- Botón Cámara -->
+                                <Button Content="📷  Cámara"
+                                        Command="{Binding OpenCameraCommand}"
+                                        Cursor="Hand"
+                                        Height="34"
+                                        Margin="0,0,0,8"
+                                        Style="{StaticResource BtnPrimary}"
+                                        ToolTip="Abrir cámara web"/>
+
+                                <DockPanel LastChildFill="True">
                                 <!-- Avatar con gradiente -->
                                 <Border Width="34" Height="34" CornerRadius="17" Margin="0,0,10,0">
                                     <Border.Background>
@@ -335,6 +345,7 @@
                                                FontSize="10" Margin="0,2,0,0"/>
                                 </StackPanel>
                             </DockPanel>
+                            </StackPanel>
                         </Border>
                     </Grid>
                 </Border>

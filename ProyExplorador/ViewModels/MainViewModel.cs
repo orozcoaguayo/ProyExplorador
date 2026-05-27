@@ -2,7 +2,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ProyExplorador.Models;
 using ProyExplorador.Services;
+using ProyExplorador.Views;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace ProyExplorador.ViewModels
 {
@@ -99,6 +101,26 @@ namespace ProyExplorador.ViewModels
             {
                 _navigation.GoBack();
                 await Task.CompletedTask;
+            }
+        }
+
+        // ── Cámara ────────────────────────────────────────────────────────
+        [RelayCommand]
+        private void OpenCamera()
+        {
+            try
+            {
+                var win = new CameraWindow
+                {
+                    Owner = Application.Current.MainWindow
+                };
+                win.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"No se pudo abrir la ventana de cámara:\n{ex.Message}",
+                    "Error de cámara", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
