@@ -22,8 +22,6 @@ namespace ProyExplorador.Services
                 ".pptx", ".ppt",
                 // PDF
                 ".pdf",
-                // Imágenes
-                ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff", ".webp",
                 // Vídeo
                 ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".flv", ".webm",
                 // Audio

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using ProyExplorador.Models;
 using ProyExplorador.Services;
+using ProyExplorador.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -160,7 +161,24 @@ namespace ProyExplorador.ViewModels
                 return;
             }
 
-            // Office, PDF, imágenes, vídeo → app nativa de Windows
+            // Imágenes → Editor de fotos interno
+            var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
+            if (imageExtensions.Contains(item.Extension, StringComparer.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    var editor = new PhotoEditorWindow(item.FullPath);
+                    editor.Show();
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error al abrir editor de fotos");
+                    // Fallback a app nativa si falla el editor
+                }
+            }
+
+            // Office, PDF, vídeo → app nativa de Windows
             if (FileOpenerService.ShouldOpenNatively(item.Extension))
             {
                 await Task.Run(() => FileOpenerService.OpenWithDefaultApp(item.FullPath));
