@@ -68,6 +68,10 @@
         </Border.Effect>
 
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="598*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="60"/>
@@ -78,7 +82,7 @@
             <!-- ══════════════════════════════════════════════════════
                  TITLEBAR
             ══════════════════════════════════════════════════════ -->
-            <Border Grid.Row="0" CornerRadius="14,14,0,0" MouseDown="TitleBar_MouseDown">
+            <Border Grid.Row="0" CornerRadius="14,14,0,0" MouseDown="TitleBar_MouseDown" Grid.ColumnSpan="2">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                         <GradientStop Color="#0F0F16" Offset="0"/>
@@ -143,7 +147,7 @@
                  TOOLBAR
             ══════════════════════════════════════════════════════ -->
             <Border Grid.Row="1" Background="{StaticResource BgSecondaryBrush}"
-                    BorderBrush="#12FFFFFF" BorderThickness="0,0,0,1" Padding="12,0">
+                    BorderBrush="#12FFFFFF" BorderThickness="0,0,0,1" Padding="12,0" Grid.ColumnSpan="2">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <!-- Archivo -->
                     <Button Content="📂" Click="BtnOpen_Click" Style="{StaticResource ToolbarButton}" ToolTip="Abrir imagen"/>
@@ -197,7 +201,7 @@
             <!-- ══════════════════════════════════════════════════════
                  ÁREA PRINCIPAL: IMAGEN + PANEL DERECHO
             ══════════════════════════════════════════════════════ -->
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="280"/>
@@ -622,7 +626,7 @@
             ══════════════════════════════════════════════════════ -->
             <Border Grid.Row="3" Background="{StaticResource BgTertiaryBrush}"
                     BorderBrush="#12FFFFFF" BorderThickness="0,1,0,0"
-                    CornerRadius="0,0,14,14" Padding="16,0">
+                    CornerRadius="0,0,14,14" Padding="16,0" Grid.ColumnSpan="2">
                 <Grid>
                     <TextBlock x:Name="TxtStatus" Text="Listo"
                                Foreground="{StaticResource TextSecondaryBrush}"

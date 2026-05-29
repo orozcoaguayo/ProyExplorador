@@ -124,6 +124,35 @@ namespace ProyExplorador.ViewModels
             }
         }
 
+        // ── Editor de Fotos ───────────────────────────────────────────────
+        [RelayCommand]
+        private void OpenPhotoEditor()
+        {
+            try
+            {
+                var dlg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Title  = "Seleccionar imagen",
+                    Filter = "Imágenes|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tiff;*.webp|Todos los archivos|*.*"
+                };
+
+                if (dlg.ShowDialog() == true)
+                {
+                    var win = new PhotoEditorWindow(dlg.FileName)
+                    {
+                        Owner = Application.Current.MainWindow
+                    };
+                    win.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"No se pudo abrir el editor de fotos:\n{ex.Message}",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
         // ── Búsqueda global rápida ────────────────────────────────────────
         [RelayCommand]
         private async Task GlobalSearchAsync()

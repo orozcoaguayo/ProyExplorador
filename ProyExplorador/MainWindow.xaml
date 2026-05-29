@@ -309,6 +309,15 @@
                                 BorderBrush="#12FFFFFF"
                                 BorderThickness="0,1,0,0">
                             <StackPanel>
+                                <!-- Botón Editor de Fotos -->
+                                <Button Content="🖼️  Editor de Fotos"
+                                        Command="{Binding OpenPhotoEditorCommand}"
+                                        Cursor="Hand"
+                                        Height="34"
+                                        Margin="0,0,0,8"
+                                        Style="{StaticResource BtnSecondary}"
+                                        ToolTip="Abrir editor de fotos"/>
+
                                 <!-- Botón Cámara -->
                                 <Button Content="📷  Cámara"
                                         Command="{Binding OpenCameraCommand}"
