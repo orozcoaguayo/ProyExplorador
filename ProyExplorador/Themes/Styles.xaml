@@ -181,6 +181,46 @@
     </Style>
 
     <!-- ══════════════════════════════════════════════════════════
+         BOTÓN SECUNDARIO — borde de acento, fondo transparente
+    ══════════════════════════════════════════════════════════ -->
+    <Style x:Key="BtnSecondary" TargetType="Button">
+        <Setter Property="Background"      Value="Transparent"/>
+        <Setter Property="Foreground"      Value="{StaticResource AccentBrush}"/>
+        <Setter Property="FontFamily"      Value="{StaticResource FontMain}"/>
+        <Setter Property="FontSize"        Value="13"/>
+        <Setter Property="FontWeight"      Value="SemiBold"/>
+        <Setter Property="Padding"         Value="20,10"/>
+        <Setter Property="BorderBrush"     Value="{StaticResource AccentBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Cursor"          Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="9"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#1A7C6DFA"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#307C6DFA"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.35"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ══════════════════════════════════════════════════════════
          BOTÓN GHOST — hover suave
     ══════════════════════════════════════════════════════════ -->
     <Style x:Key="BtnGhost" TargetType="Button">
