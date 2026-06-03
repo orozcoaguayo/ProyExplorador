@@ -30,7 +30,7 @@ namespace ProyExplorador.ViewModels
         [ObservableProperty] private BitmapImage? _albumArtwork;
         [ObservableProperty] private bool _hasAlbumArt;
 
-        public ObservableCollection<FileItem> Playlist { get; } = [];
+        public ObservableCollection<FileItem> Playlist { get; } = new();
 
         public Action? PlayAction { get; set; }
         public Action? PauseAction { get; set; }
@@ -69,7 +69,7 @@ namespace ProyExplorador.ViewModels
         }
 
         [RelayCommand]
-        private async Task PlayItemAsync(FileItem item)
+        public async Task PlayItemAsync(FileItem item)
         {
             CurrentIndex = Playlist.IndexOf(item);
             CurrentFilePath = item.FullPath;
