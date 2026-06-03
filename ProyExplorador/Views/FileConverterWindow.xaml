@@ -1,0 +1,78 @@
+<Window x:Class="ProyExplorador.Views.FileConverterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Conversor de Archivos"
+        Width="900" Height="640"
+        MinWidth="700" MinHeight="480"
+        WindowStartupLocation="CenterOwner"
+        Background="Transparent"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip"
+        FontFamily="{StaticResource FontMain}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border CornerRadius="14"
+            Background="{StaticResource BgPrimaryBrush}"
+            BorderBrush="#1EFFFFFF"
+            BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="40" ShadowDepth="8" Opacity="0.55"/>
+        </Border.Effect>
+
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="0" Margin="0,0,0,8">
+                <TextBox x:Name="TxtRutaArchivo" Width="560" Height="34" IsReadOnly="True"
+                         Background="#16162A" Foreground="{StaticResource TextPrimaryBrush}"
+                         BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Padding="10,6"/>
+                <Button x:Name="BtnExaminar" Content="Examinar" Width="100" Height="34" Margin="8,0,0,0"
+                        Click="BtnExaminar_Click" Style="{StaticResource BtnSecondary}"/>
+                <ComboBox x:Name="CmbFormatoSalida" Width="160" Height="34" Margin="8,0,0,0"
+                          VerticalAlignment="Center">
+                    <ComboBoxItem Tag="TXT">TXT</ComboBoxItem>
+                    <ComboBoxItem Tag="JSON">JSON</ComboBoxItem>
+                    <ComboBoxItem Tag="XML">XML</ComboBoxItem>
+                    <ComboBoxItem Tag="CSV">CSV</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                <Button x:Name="BtnConvertir" Content="Convertir" Width="120" Height="34" Click="BtnConvertir_Click"
+                        Style="{StaticResource BtnPrimary}"/>
+                <Button x:Name="BtnGuardarComo" Content="Guardar Como" Width="120" Height="34" Margin="8,0,0,0"
+                        Click="BtnGuardarComo_Click" Style="{StaticResource BtnGhost}"/>
+            </StackPanel>
+
+            <Border Grid.Row="2" CornerRadius="8" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" Background="#0B0000">
+                <Grid>
+                    <TextBox x:Name="PreviewTextBox" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                             HorizontalScrollBarVisibility="Auto" AcceptsReturn="True" IsReadOnly="True"
+                             Background="#0F0F12" Foreground="{StaticResource TextSecondaryBrush}" FontSize="13" Padding="12"/>
+                </Grid>
+            </Border>
+
+            <StatusBar Grid.Row="3" Margin="0,8,0,0">
+                <StatusBarItem>
+                    <TextBlock x:Name="StatusTextBlock" Text="Listo" Foreground="{StaticResource TextMutedBrush}"/>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </Border>
+</Window>

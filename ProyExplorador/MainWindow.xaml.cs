@@ -24,6 +24,61 @@ namespace ProyExplorador
             _toastTimer.Tick += (_, _) => HideToast();
         }
 
+        // Handler para abrir la ventana del Conversor de Archivos
+        private void BtnConversorArchivos_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var ventana = new ProyExplorador.Views.FileConverterWindow()
+                {
+                    Owner = this
+                };
+                ventana.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"No se pudo abrir el conversor: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Handler para abrir la ventana Ver Ubicación
+        private void BtnUbicacion_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var ventana = new ProyExplorador.Views.LocationWindow()
+                {
+                    Owner = this
+                };
+                ventana.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"No se pudo abrir Ver Ubicación: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Handler para abrir el Navegador Web integrado
+        private void BtnNavegadorWeb_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var ventana = new ProyExplorador.Views.BrowserWindow()
+                {
+                    Owner = this
+                };
+                ventana.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"No se pudo abrir el navegador: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             // Activar dark-mode nativo DWM

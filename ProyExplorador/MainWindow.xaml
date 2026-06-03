@@ -318,6 +318,36 @@
                                         Style="{StaticResource BtnSecondary}"
                                         ToolTip="Abrir editor de fotos"/>
 
+                                <!-- Nuevo: Conversor de Archivos -->
+                                <Button Content="🔁  Conversor de Archivos"
+                                        x:Name="BtnConversorArchivos"
+                                        Cursor="Hand"
+                                        Height="34"
+                                        Margin="0,0,0,8"
+                                        Click="BtnConversorArchivos_Click"
+                                        Style="{StaticResource BtnSecondary}"
+                                        ToolTip="Abrir conversor de archivos"/>
+
+                                <!-- Nuevo: Ver Ubicación -->
+                                <Button Content="📍  Ver Ubicación"
+                                        x:Name="BtnVerUbicacion"
+                                        Cursor="Hand"
+                                        Height="34"
+                                        Margin="0,0,0,8"
+                                        Click="BtnUbicacion_Click"
+                                        Style="{StaticResource BtnSecondary}"
+                                        ToolTip="Ver ubicación actual"/>
+
+                                <!-- Nuevo: Navegador Web -->
+                                <Button Content="🌐  Navegador Web"
+                                        x:Name="BtnNavegadorWeb"
+                                        Cursor="Hand"
+                                        Height="34"
+                                        Margin="0,0,0,8"
+                                        Click="BtnNavegadorWeb_Click"
+                                        Style="{StaticResource BtnSecondary}"
+                                        ToolTip="Abrir navegador web"/>
+
                                 <!-- Botón Cámara -->
                                 <Button Content="📷  Cámara"
                                         Command="{Binding OpenCameraCommand}"
