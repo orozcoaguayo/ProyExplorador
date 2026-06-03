@@ -1,0 +1,135 @@
+<Window x:Class="ProyExplorador.Views.CalculatorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Calculadora"
+        Width="500" Height="700"
+        WindowStartupLocation="CenterOwner"
+        Background="Transparent"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip"
+        FontFamily="{StaticResource FontMain}">
+
+    <Border CornerRadius="14"
+            Background="{StaticResource BgPrimaryBrush}"
+            BorderBrush="#1EFFFFFF"
+            BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect Color="#000000" BlurRadius="40" ShadowDepth="8" Opacity="0.55"/>
+        </Border.Effect>
+
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="140"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center" Margin="0,0,0,8">
+                <Border Width="34" Height="34" CornerRadius="7" Margin="0,0,10,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#7C6DFA" Offset="0"/>
+                            <GradientStop Color="#3EC9C0" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock Text="🧮" Foreground="White" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Calculadora" Foreground="{StaticResource TextPrimaryBrush}" FontSize="13" FontWeight="SemiBold"/>
+                    <TextBlock Text="Operaciones rápidas" Foreground="{StaticResource TextMutedBrush}" FontSize="11"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Display -->
+            <Border Grid.Row="1" CornerRadius="8" Background="#0B0000" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" Padding="12" Margin="0,0,0,8">
+                <TextBox x:Name="TxtDisplay" Text="0" IsReadOnly="True" BorderThickness="0" Background="Transparent" Foreground="{StaticResource TextPrimaryBrush}" FontSize="36" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            </Border>
+
+            <!-- Buttons and controls -->
+            <Grid Grid.Row="2" Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="220"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Buttons grid -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Row 1 -->
+                    <Button Grid.Row="0" Grid.Column="0" Content="MC" Click="BtnMC_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+                    <Button Grid.Row="0" Grid.Column="1" Content="MR" Click="BtnMR_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+                    <Button Grid.Row="0" Grid.Column="2" Content="M+" Click="BtnMPlus_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+                    <Button Grid.Row="0" Grid.Column="3" Content="M-" Click="BtnMMinus_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+
+                    <Button Grid.Row="0" Grid.Column="4" Visibility="Collapsed"/>
+
+                    <Button Grid.Row="0" Grid.Column="3" Content="C" Click="BtnC_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+
+                    <!-- Since template required 4 columns, adjust C position to col3 (already). -->
+
+                    <!-- Row 2 -->
+                    <Button Grid.Row="1" Grid.Column="0" Content="7" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="1" Grid.Column="1" Content="8" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="1" Grid.Column="2" Content="9" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="1" Grid.Column="3" Content="÷" Click="BtnOperator_Click" Style="{StaticResource BtnPrimary}" Margin="4"/>
+
+                    <!-- Row 3 -->
+                    <Button Grid.Row="2" Grid.Column="0" Content="4" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="2" Grid.Column="1" Content="5" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="2" Grid.Column="2" Content="6" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="2" Grid.Column="3" Content="×" Click="BtnOperator_Click" Style="{StaticResource BtnPrimary}" Margin="4"/>
+
+                    <!-- Row 4 -->
+                    <Button Grid.Row="3" Grid.Column="0" Content="1" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="3" Grid.Column="1" Content="2" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="3" Grid.Column="2" Content="3" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="3" Grid.Column="3" Content="−" Click="BtnOperator_Click" Style="{StaticResource BtnPrimary}" Margin="4"/>
+
+                    <!-- Row 5 -->
+                    <Button Grid.Row="4" Grid.Column="0" Content="0" Click="BtnDigit_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="4" Grid.Column="1" Content="." Click="BtnDecimal_Click" Style="{StaticResource BtnSecondary}" Margin="4"/>
+                    <Button Grid.Row="4" Grid.Column="2" Content="=" Click="BtnEquals_Click" Style="{StaticResource BtnPrimary}" Margin="4"/>
+                    <Button Grid.Row="4" Grid.Column="3" Content="+" Click="BtnOperator_Click" Style="{StaticResource BtnPrimary}" Margin="4"/>
+
+                    <!-- Row 6 -->
+                    <Button Grid.Row="5" Grid.Column="0" Content="√" Click="BtnSqrt_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+                    <Button Grid.Row="5" Grid.Column="1" Content="x²" Click="BtnSquare_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+                    <Button Grid.Row="5" Grid.Column="2" Content="%" Click="BtnPercent_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+                    <Button Grid.Row="5" Grid.Column="3" Content="CE" Click="BtnCE_Click" Style="{StaticResource BtnGhost}" Margin="4"/>
+                </Grid>
+
+                <!-- Historial -->
+                <Border Grid.Column="1" CornerRadius="8" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" Background="#0B0000" Padding="8">
+                    <StackPanel>
+                        <TextBlock Text="Historial de operaciones" Foreground="{StaticResource TextPrimaryBrush}" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <ListBox x:Name="LstHistorial" Background="#0F0F12" Foreground="{StaticResource TextSecondaryBrush}" Height="420"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Footer -->
+            <StatusBar Grid.Row="3" Margin="0,8,0,0">
+                <StatusBarItem>
+                    <TextBlock Text="Calculadora lista" Foreground="{StaticResource TextMutedBrush}"/>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </Border>
+</Window>
