@@ -292,8 +292,15 @@ namespace ProyExplorador.Services
         // ──────────────────────────────────────────────────────────────────
         public Task OpenFileAsync(string path)
         {
-            try { Process.Start(new ProcessStartInfo(path) { UseShellExecute = true }); }
-            catch (Exception ex) { _logger.LogError(ex, "OpenFile failed: {Path}", path); }
+            try
+            {
+                // Delegar la apertura al servicio centralizado que muestra mensajes amigables
+                FileOpenerService.OpenWithDefaultApp(path);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "OpenFile failed: {Path}", path);
+            }
             return Task.CompletedTask;
         }
 

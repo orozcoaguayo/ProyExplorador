@@ -12,7 +12,9 @@
             <BeginStoryboard>
                 <Storyboard>
                     <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3">
-                        <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
                     </DoubleAnimation>
                 </Storyboard>
             </BeginStoryboard>
@@ -41,6 +43,7 @@
             <!-- Canvas de vídeo / portada -->
             <Border Grid.Row="0" Background="#050508">
                 <Grid>
+                    <!-- Video player (para videos) -->
                     <MediaElement x:Name="MediaPlayer"
                                   LoadedBehavior="Manual"
                                   UnloadedBehavior="Stop"
@@ -50,7 +53,38 @@
                                   MediaOpened="MediaPlayer_MediaOpened"
                                   MediaEnded="MediaPlayer_MediaEnded"/>
 
-                    <!-- Estado vacío -->
+                    <!-- Album Cover (para música) -->
+                    <Image x:Name="AlbumArtwork"
+                           Source="{Binding AlbumArtwork}"
+                           Stretch="UniformToFill"
+                           Opacity="0.9"/>
+
+                    <!-- Fallback si no hay carátula -->
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasAlbumArt}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <Border Width="140" Height="140" CornerRadius="18" Margin="0,0,0,20">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#1E7C6DFA" Offset="0"/>
+                                    <GradientStop Color="#1E3EC9C0" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <TextBlock Text="🎵" FontSize="70"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" Opacity="0.6"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Estado vacío (sin reproducción) -->
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
                                 Visibility="{Binding CurrentFilePath,
                                     Converter={StaticResource NullOrEmptyToVisibilityConverter}}">

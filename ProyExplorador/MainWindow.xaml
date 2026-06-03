@@ -328,15 +328,7 @@
                                         Style="{StaticResource BtnSecondary}"
                                         ToolTip="Abrir conversor de archivos"/>
 
-                                <!-- Nuevo: Ver Ubicación -->
-                                <Button Content="📍  Ver Ubicación"
-                                        x:Name="BtnVerUbicacion"
-                                        Cursor="Hand"
-                                        Height="34"
-                                        Margin="0,0,0,8"
-                                        Click="BtnUbicacion_Click"
-                                        Style="{StaticResource BtnSecondary}"
-                                        ToolTip="Ver ubicación actual"/>
+                                <!-- Ver Ubicación eliminado -->
 
                                 <!-- Nuevo: Navegador Web -->
                                 <Button Content="🌐  Navegador Web"

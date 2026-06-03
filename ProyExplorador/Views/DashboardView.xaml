@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
              mc:Ignorable="d"
              Background="Transparent"
              d:DesignHeight="768" d:DesignWidth="1060">
@@ -57,6 +58,13 @@
                             <Border Style="{StaticResource BadgeAccent}" Margin="0,0,8,0">
                                 <TextBlock Text="Windows 11 Style" FontSize="11"
                                            Foreground="{StaticResource TextAccentBrush}"
+                                           FontFamily="{StaticResource FontMain}"/>
+                            </Border>
+
+                <!-- badge success preserved -->
+                            <Border Style="{StaticResource BadgeSuccess}">
+                                <TextBlock Text=".NET 8 · WPF" FontSize="11"
+                                           Foreground="{StaticResource SuccessBrush}"
                                            FontFamily="{StaticResource FontMain}"/>
                             </Border>
                             <Border Style="{StaticResource BadgeSuccess}">

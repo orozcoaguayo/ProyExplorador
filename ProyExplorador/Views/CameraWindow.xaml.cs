@@ -18,7 +18,7 @@ namespace ProyExplorador.Views
         public CameraWindow()
         {
             InitializeComponent();
-            Loaded  += OnLoaded;
+            Loaded += OnLoaded;
             Closing += OnClosing;
         }
 
@@ -54,9 +54,10 @@ namespace ProyExplorador.Views
                 var idx = CmbDevices.SelectedIndex >= 0 ? CmbDevices.SelectedIndex : 0;
                 _camera.Start(idx);
 
-                BtnStart.IsEnabled   = false;
-                BtnStop.IsEnabled    = true;
+                BtnStart.IsEnabled = false;
+                BtnStop.IsEnabled = true;
                 BtnCapture.IsEnabled = true;
+                BtnStartRecording.IsEnabled = true;
                 NoSignalOverlay.Visibility = Visibility.Collapsed;
                 TxtStatus.Text = "Cámara activa";
             }
@@ -86,10 +87,10 @@ namespace ProyExplorador.Views
             // Seleccionar carpeta destino
             var dialog = new SaveFileDialog
             {
-                Title            = "Guardar fotografía",
-                Filter           = "JPEG (*.jpg)|*.jpg|PNG (*.png)|*.png",
-                DefaultExt       = "jpg",
-                FileName         = $"Foto_{DateTime.Now:yyyyMMdd_HHmmss}"
+                Title = "Guardar fotografía",
+                Filter = "JPEG (*.jpg)|*.jpg|PNG (*.png)|*.png",
+                DefaultExt = "jpg",
+                FileName = $"Foto_{DateTime.Now:yyyyMMdd_HHmmss}"
             };
 
             if (dialog.ShowDialog(this) != true) return;
@@ -155,12 +156,14 @@ namespace ProyExplorador.Views
         private void StopCamera()
         {
             _camera.Stop();
-            ImgPreview.Source          = null;
+            ImgPreview.Source = null;
             NoSignalOverlay.Visibility = Visibility.Visible;
-            BtnStart.IsEnabled         = true;
-            BtnStop.IsEnabled          = false;
-            BtnCapture.IsEnabled       = false;
-            TxtStatus.Text             = "Cámara desactivada";
+            BtnStart.IsEnabled = true;
+            BtnStop.IsEnabled = false;
+            BtnCapture.IsEnabled = false;
+            BtnStartRecording.IsEnabled = false;
+            BtnStopRecording.IsEnabled = false;
+            TxtStatus.Text = "Cámara desactivada";
         }
 
         private void PlayFlash()
@@ -185,6 +188,56 @@ namespace ProyExplorador.Views
         {
             _camera.FrameReady -= OnFrameReady;
             _camera.Dispose();
+        }
+
+        // ── Grabación de video ────────────────────────────────────────────
+        private void BtnStartRecording_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_camera.IsRunning)
+            {
+                ShowError("Cámara inactiva", "Inicia la cámara antes de grabar.");
+                return;
+            }
+
+            var dialog = new SaveFileDialog
+            {
+                Title = "Guardar video (se guardará como frames JPG)",
+                Filter = "Video (*.mp4)|*.mp4|Imágenes (*.jpg)|*.jpg",
+                DefaultExt = "mp4",
+                FileName = $"Video_{DateTime.Now:yyyyMMdd_HHmmss}"
+            };
+
+            if (dialog.ShowDialog(this) != true) return;
+
+            if (_camera.StartRecording(dialog.FileName, 640, 480, 30))
+            {
+                BtnStartRecording.IsEnabled = false;
+                BtnStopRecording.IsEnabled = true;
+                BtnCapture.IsEnabled = false;
+                TxtStatus.Text = "Grabando video...";
+            }
+            else
+            {
+                ShowError("Error", "No se pudo iniciar la grabación.");
+            }
+        }
+
+        private void BtnStopRecording_Click(object sender, RoutedEventArgs e)
+        {
+            bool success = _camera.StopRecording();
+            BtnStartRecording.IsEnabled = true;
+            BtnStopRecording.IsEnabled = false;
+            BtnCapture.IsEnabled = true;
+            TxtStatus.Text = "Cámara activa";
+
+            if (success)
+            {
+                MessageBox.Show(this, "✅ Video MP4 guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(this, "❌ Error al guardar el video. Verifica que FFmpeg esté instalado:\nchoco install ffmpeg", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

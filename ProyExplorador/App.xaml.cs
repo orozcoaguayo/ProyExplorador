@@ -47,12 +47,12 @@ namespace ProyExplorador
             services.AddSingleton<PerformanceMonitor>();
             services.AddSingleton<CleanupService>();
 
-            // ViewModels — FileReaderViewModel antes de FileExplorerViewModel
+            // ViewModels — registrar Multimedia antes de FileReader/FileExplorer por dependencias
             services.AddSingleton<DashboardViewModel>();
+            services.AddSingleton<MultimediaViewModel>();
             services.AddSingleton<FileReaderViewModel>();
             services.AddSingleton<FileExplorerViewModel>();
             services.AddSingleton<SearchViewModel>();
-            services.AddSingleton<MultimediaViewModel>();
             services.AddSingleton<CleanupViewModel>();
             services.AddSingleton<StatsViewModel>();
             services.AddSingleton<SettingsViewModel>();

@@ -3,11 +3,14 @@ using CommunityToolkit.Mvvm.Input;
 using ProyExplorador.Models;
 using ProyExplorador.Services;
 using System.Collections.ObjectModel;
+using System;
+using System.Threading.Tasks;
 
 namespace ProyExplorador.ViewModels
 {
     /// <summary>
     /// ViewModel del Dashboard principal: drives, accesos rápidos y recientes.
+    /// Ubicación removida por completo.
     /// </summary>
     public partial class DashboardViewModel : ViewModelBase
     {
@@ -19,14 +22,14 @@ namespace ProyExplorador.ViewModels
         [ObservableProperty] private long _totalFilesCount;
         [ObservableProperty] private string _systemInfo = string.Empty;
 
-        public ObservableCollection<DriveItem>  Drives      { get; } = [];
-        public ObservableCollection<RecentFile> RecentFiles { get; } = [];
-        public ObservableCollection<QuickAccess> QuickAccesses { get; } = [];
+        public ObservableCollection<DriveItem> Drives { get; } = new();
+        public ObservableCollection<RecentFile> RecentFiles { get; } = new();
+        public ObservableCollection<QuickAccess> QuickAccesses { get; } = new();
 
         public DashboardViewModel(IFileService fileService, INavigationService navigation)
         {
             _fileService = fileService;
-            _navigation  = navigation;
+            _navigation = navigation;
         }
 
         public override async Task InitializeAsync()
@@ -71,12 +74,12 @@ namespace ProyExplorador.ViewModels
             QuickAccesses.Clear();
             var specials = new[]
             {
-                (Environment.SpecialFolder.Desktop,       "Escritorio",   "🖥️"),
-                (Environment.SpecialFolder.MyDocuments,   "Documentos",   "📄"),
-                (Environment.SpecialFolder.MyPictures,    "Imágenes",     "🖼️"),
-                (Environment.SpecialFolder.MyMusic,       "Música",       "🎵"),
-                (Environment.SpecialFolder.MyVideos,      "Videos",       "🎬"),
-                (Environment.SpecialFolder.UserProfile,   "Usuario",      "👤"),
+                (Environment.SpecialFolder.Desktop, "Escritorio", "🖥️"),
+                (Environment.SpecialFolder.MyDocuments, "Documentos", "📄"),
+                (Environment.SpecialFolder.MyPictures, "Imágenes", "🖼️"),
+                (Environment.SpecialFolder.MyMusic, "Música", "🎵"),
+                (Environment.SpecialFolder.MyVideos, "Videos", "🎬"),
+                (Environment.SpecialFolder.UserProfile, "Usuario", "👤"),
             };
 
             foreach (var (folder, name, icon) in specials)
@@ -99,7 +102,7 @@ namespace ProyExplorador.ViewModels
             {
                 < 12 => "☀️  Buenos días",
                 < 18 => "🌤️  Buenas tardes",
-                _    => "🌙  Buenas noches"
+                _ => "🌙  Buenas noches"
             };
         }
     }

@@ -10,22 +10,14 @@ namespace ProyExplorador.Services
     /// </summary>
     public static class FileOpenerService
     {
-        // ── Extensiones que deben abrirse siempre con app nativa ──────────
+        // ── Extensiones que deben abrirse siempre con app nativa (Office y PDF) ──────────
         private static readonly HashSet<string> NativeExtensions =
             new(StringComparer.OrdinalIgnoreCase)
             {
-                // Office – Excel
-                ".xlsx", ".xls", ".csv",
-                // Office – Word
-                ".docx", ".doc", ".rtf",
-                // Office – PowerPoint
-                ".pptx", ".ppt",
+                // Office – Excel/Word/PowerPoint
+                ".xlsx", ".xls", ".docx", ".doc", ".pptx", ".ppt",
                 // PDF
-                ".pdf",
-                // Vídeo
-                ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".flv", ".webm",
-                // Audio
-                ".mp3", ".wav", ".flac", ".ogg", ".aac", ".wma",
+                ".pdf"
             };
 
         /// <summary>

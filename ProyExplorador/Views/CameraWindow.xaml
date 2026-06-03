@@ -141,45 +141,56 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Izquierda: iniciar / detener -->
-                    <StackPanel Grid.Column="0" Orientation="Horizontal"
-                                HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Button x:Name="BtnStart" Content="▶  Iniciar"
-                                Click="BtnStart_Click"
-                                Width="110" Height="36"
-                                Margin="0,0,8,0"
-                                Style="{StaticResource BtnPrimary}"/>
-                        <Button x:Name="BtnStop" Content="⏹  Detener"
-                                Click="BtnStop_Click"
-                                IsEnabled="False"
-                                Width="110" Height="36"
-                                Style="{StaticResource BtnGhost}"/>
-                    </StackPanel>
+                    <!-- Botón Iniciar -->
+                    <Button Grid.Column="0" x:Name="BtnStart" Content="▶  Iniciar"
+                            Click="BtnStart_Click"
+                            Width="110" Height="36"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource BtnPrimary}"/>
 
-                    <!-- Centro: captura -->
-                    <Button Grid.Column="1" x:Name="BtnCapture"
+                    <!-- Botón Detener -->
+                    <Button Grid.Column="1" x:Name="BtnStop" Content="⏹  Detener"
+                            Click="BtnStop_Click"
+                            IsEnabled="False"
+                            Width="110" Height="36"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource BtnGhost}"/>
+
+                    <!-- Espacio flexible -->
+                    <Border Grid.Column="2"/>
+
+                    <!-- Botón Tomar Foto -->
+                    <Button Grid.Column="3" x:Name="BtnCapture"
                             Content="📸  Tomar Foto"
                             Click="BtnCapture_Click"
                             IsEnabled="False"
-                            Width="150" Height="40">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource BtnPrimary}">
-                                <Setter Property="FontSize" Value="14"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+                            Width="150" Height="40"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource BtnPrimary}"/>
 
-                    <!-- Derecha: cancelar -->
-                    <Button Grid.Column="2" Content="Cancelar"
-                            Click="BtnClose_Click"
-                            HorizontalAlignment="Right"
-                            Width="100" Height="36"
+                    <!-- Botón Grabar Video -->
+                    <Button Grid.Column="4" x:Name="BtnStartRecording"
+                            Content="🔴  Grabar"
+                            Click="BtnStartRecording_Click"
+                            IsEnabled="False"
+                            Width="120" Height="40"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource BtnPrimary}"/>
+
+                    <!-- Botón Detener Grabación -->
+                    <Button Grid.Column="5" x:Name="BtnStopRecording"
+                            Content="⏹  Parar"
+                            Click="BtnStopRecording_Click"
+                            IsEnabled="False"
+                            Width="100" Height="40"
                             Style="{StaticResource BtnGhost}"/>
                 </Grid>
             </Border>

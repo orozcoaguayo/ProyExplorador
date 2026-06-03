@@ -25,6 +25,7 @@ namespace ProyExplorador.ViewModels
         private readonly IFileService        _fileService;
         private readonly INavigationService  _navigation;
         private readonly FileReaderViewModel _fileReader;
+        private readonly MultimediaViewModel _multimediaVm;
         private readonly ILogger<FileExplorerViewModel> _logger;
 
         // CancellationToken específico para la carga del directorio actual
@@ -62,18 +63,20 @@ namespace ProyExplorador.ViewModels
         ];
 
         private static readonly HashSet<string> TextExtensions =
-            new([".txt", ".log", ".md", ".json", ".xml", ".ini", ".cfg", ".yaml", ".yml"],
+            new([".txt", ".log", ".md", ".json", ".xml", ".ini", ".cfg", ".yaml", ".yml", ".cs", ".html", ".htm", ".css", ".js", ".config"],
                 StringComparer.OrdinalIgnoreCase);
 
         public FileExplorerViewModel(
             IFileService fileService,
             INavigationService navigation,
             FileReaderViewModel fileReader,
+            MultimediaViewModel multimediaVm,
             ILogger<FileExplorerViewModel> logger)
         {
             _fileService = fileService;
             _navigation  = navigation;
             _fileReader  = fileReader;
+            _multimediaVm = multimediaVm;
             _logger      = logger;
             _currentPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         }
@@ -162,7 +165,7 @@ namespace ProyExplorador.ViewModels
             }
 
             // Imágenes → Editor de fotos interno
-            var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
+            var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff" };
             if (imageExtensions.Contains(item.Extension, StringComparer.OrdinalIgnoreCase))
             {
                 try
@@ -178,6 +181,24 @@ namespace ProyExplorador.ViewModels
                 }
             }
 
+            // Multimedia → Vista integrada de reproductor
+            var mediaExts = new[] { ".mp4", ".avi", ".mkv", ".mov", ".mp3", ".wav", ".wma" };
+            if (mediaExts.Contains(item.Extension, StringComparer.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    // Reproducir mediante el MultimediaViewModel inyectado y navegar a la vista
+                    await _multimediaVm.PlayItemAsync(item);
+                    _navigation.NavigateTo("Multimedia");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Error al reproducir internamente, se abrirá con la app predeterminada.");
+                    // Fallback al shell de Windows
+                }
+            }
+
             // Office, PDF, vídeo → app nativa de Windows
             if (FileOpenerService.ShouldOpenNatively(item.Extension))
             {
@@ -185,8 +206,8 @@ namespace ProyExplorador.ViewModels
                 return;
             }
 
-            // Resto → shell genérico (fallback del servicio existente)
-            await _fileService.OpenFileAsync(item.FullPath);
+            // Resto → delegar al servicio centralizado (FileOpenerService) para manejo de errores
+            await Task.Run(() => FileOpenerService.OpenWithDefaultApp(item.FullPath));
         }
 
         [RelayCommand]

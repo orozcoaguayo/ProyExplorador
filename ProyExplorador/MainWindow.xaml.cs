@@ -44,41 +44,7 @@ namespace ProyExplorador
             }
         }
 
-        // Handler para abrir la ventana Ver Ubicación
-        private async void BtnUbicacion_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var servicio = new LocationService();
-                var loc = await servicio.GetCurrentLocationAsync();
-                if (loc == null)
-                {
-                    MessageBox.Show(
-                        "No se pudo obtener la ubicación actual.",
-                        "Ubicación",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
-                    return;
-                }
-
-                var url = $"https://www.google.com/maps?q={loc.Latitude.ToString(CultureInfo.InvariantCulture)},{loc.Longitude.ToString(CultureInfo.InvariantCulture)}";
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                });
-
-                MessageBox.Show(
-                    "La ubicación se abrirá en Google Maps.",
-                    "Ubicación",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        // Ver ubicación eliminado
 
         // Handler para abrir el Navegador Web integrado
         private void BtnNavegadorWeb_Click(object sender, RoutedEventArgs e)

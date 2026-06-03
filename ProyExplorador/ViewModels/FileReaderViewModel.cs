@@ -20,6 +20,8 @@ namespace ProyExplorador.ViewModels
     public partial class FileReaderViewModel : ViewModelBase
     {
         private readonly IFileService _fileService;
+        private readonly INavigationService _navigation;
+        private readonly MultimediaViewModel _multimediaVm;
 
         [ObservableProperty] private string  _filePath      = string.Empty;
         [ObservableProperty] private string  _fileName      = "Sin archivo";
@@ -40,9 +42,11 @@ namespace ProyExplorador.ViewModels
         /// <summary>Nodos del árbol JSON/XML.</summary>
         public ObservableCollection<TreeNode>  TreeNodes { get; } = [];
 
-        public FileReaderViewModel(IFileService fileService)
+        public FileReaderViewModel(IFileService fileService, INavigationService navigation, MultimediaViewModel multimediaVm)
         {
-            _fileService = fileService;
+            _fileService    = fileService;
+            _navigation     = navigation;
+            _multimediaVm   = multimediaVm;
         }
 
         // ── Abrir desde diálogo ───────────────────────────────────────────
@@ -71,47 +75,79 @@ namespace ProyExplorador.ViewModels
 
             try
             {
-                FilePath      = path;
-                FileName      = Path.GetFileName(path);
+                FilePath = path;
+                FileName = Path.GetFileName(path);
                 FileExtension = Path.GetExtension(path).ToLowerInvariant();
-                FileSize      = new FileInfo(path).Length;
+                FileSize = new FileInfo(path).Length;
 
-                if (FileExtension is ".docx" or ".xlsx" or ".pptx")
+                // Office y PDF: delegar a la app nativa
+                if (FileOpenerService.ShouldOpenNatively(FileExtension))
                 {
-                    FileType   = "office";
-                    RawContent = await ParseOfficeAsync(path);
-                    LineCount  = RawContent.Split('\n').Length;
-                    HasContent = !string.IsNullOrEmpty(RawContent);
+                    FileType = "external";
+                    await Task.Run(() => FileOpenerService.OpenWithDefaultApp(path));
+                    return;
                 }
-                else if (FileExtension is ".png" or ".jpg" or ".jpeg" or ".gif" or ".bmp" or ".webp" or ".tiff" or ".tif")
+
+                // Imágenes compatibles con el editor interno
+                var imageExts = new[] { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff" };
+                if (imageExts.Contains(FileExtension, StringComparer.OrdinalIgnoreCase))
                 {
-                    FileType  = "image";
+                    // Delegar al editor de fotos (ventana dedicada) desde la capa que llama.
+                    // Aquí simplemente preparamos el ViewModel para que la UI pueda reaccionar
+                    // si fuera necesario; sin embargo, en el flujo normal el FileExplorer
+                    // abrirá PhotoEditorWindow directamente. Mantener estado por compatibilidad.
+                    FileType = "image";
                     ImagePath = path;
                     LineCount = 0;
                     HasContent = true;
+                    return;
                 }
-                else
+
+                // Multimedia (vídeo / audio) — delegar al reproductor multimedia
+                var mediaExts = new[] { ".mp4", ".avi", ".mkv", ".mov", ".mp3", ".wav", ".wma" };
+                if (mediaExts.Contains(FileExtension, StringComparer.OrdinalIgnoreCase))
                 {
-                    var content = await _fileService.ReadTextFileAsync(path);
-                    RawContent  = content;
-                    LineCount   = content.Split('\n').Length;
-                    HasContent  = !string.IsNullOrEmpty(content);
-
-                    FileType = FileExtension switch
+                    // Construir un FileItem mínimo y pedir al MultimediaViewModel que lo reproduzca
+                    var fi = new ProyExplorador.Models.FileItem
                     {
-                        ".json"          => "json",
-                        ".xml"           => "xml",
-                        ".csv"           => "csv",
-                        ".txt" or ".log" or ".md" => "txt",
-                        _                => "txt"
+                        Name = Path.GetFileName(path),
+                        FullPath = path,
+                        Extension = FileExtension
                     };
+                    // Añadir y reproducir mediante el MultimediaViewModel
+                    await _multimediaVm.PlayItemAsync(fi);
+                    // Navegar a la vista Multimedia
+                    _navigation.NavigateTo("Multimedia");
+                    return;
+                }
 
-                    switch (FileType)
-                    {
-                        case "json": await ParseJsonAsync(content); break;
-                        case "xml":  await ParseXmlAsync(content);  break;
-                        case "csv":  await ParseCsvAsync(content);  break;
-                    }
+                // Sólo permitir ciertas extensiones como texto dentro del lector
+                var allowedText = new[] { ".txt", ".cs", ".json", ".xml", ".html", ".htm", ".css", ".js", ".log", ".md", ".config" };
+                if (!allowedText.Contains(FileExtension))
+                {
+                    FileType = "external";
+                    await Task.Run(() => FileOpenerService.OpenWithDefaultApp(path));
+                    return;
+                }
+
+                var content = await _fileService.ReadTextFileAsync(path);
+                RawContent = content;
+                LineCount = content.Split('\n').Length;
+                HasContent = !string.IsNullOrEmpty(content);
+
+                FileType = FileExtension switch
+                {
+                    ".json" => "json",
+                    ".xml"  => "xml",
+                    ".txt" or ".log" or ".md" or ".cs" or ".config" or ".html" or ".htm" or ".css" or ".js" => "txt",
+                    _ => "txt"
+                };
+
+                switch (FileType)
+                {
+                    case "json": await ParseJsonAsync(content); break;
+                    case "xml":  await ParseXmlAsync(content);  break;
+                    case "csv":  await ParseCsvAsync(content);  break;
                 }
             }
             catch (Exception ex)
