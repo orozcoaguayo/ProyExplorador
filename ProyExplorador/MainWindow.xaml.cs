@@ -27,6 +27,28 @@ namespace ProyExplorador
             _toastTimer.Tick += (_, _) => HideToast();
         }
 
+        // Handler para abrir el Visualizador de Datos (ventana independiente)
+        private void BtnVisualizarDatos_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var ventana = new ProyExplorador.Views.DataViewerWindow()
+                {
+                    Owner = this
+                };
+
+                ventana.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"No se pudo abrir el visualizador de datos: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
         // Handler para abrir la ventana del Conversor de Archivos
         private void BtnConversorArchivos_Click(object sender, RoutedEventArgs e)
         {

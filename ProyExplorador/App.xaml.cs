@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ProyExplorador.Services;
 using ProyExplorador.ViewModels;
+using ProyExplorador.Parsers;
+using ProyExplorador.Views;
 using System.Diagnostics;
 using System.Windows;
 
@@ -56,6 +58,11 @@ namespace ProyExplorador
             services.AddSingleton<CleanupViewModel>();
             services.AddSingleton<StatsViewModel>();
             services.AddSingleton<SettingsViewModel>();
+            // DataViewer parsers kept if other parts need them
+            services.AddSingleton<JsonParser>();
+            services.AddSingleton<CsvParser>();
+            services.AddSingleton<XmlParser>();
+            services.AddSingleton<HtmlParser>();
             services.AddSingleton<MainViewModel>();
 
             services.AddTransient<MainWindow>();

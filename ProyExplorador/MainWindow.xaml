@@ -42,6 +42,7 @@
         <DataTemplate DataType="{x:Type vm:FileReaderViewModel}">
             <views:FileReaderView/>
         </DataTemplate>
+        <!-- DataViewer is now an independent window; no DataTemplate here -->
     </Window.Resources>
 
     <!-- Marco exterior con sombra profunda -->
@@ -339,6 +340,16 @@
                                         Click="BtnNavegadorWeb_Click"
                                         Style="{StaticResource BtnSecondary}"
                                         ToolTip="Abrir navegador web"/>
+                                <!-- Nuevo: Visualizador de Datos (ventana independiente) -->
+                                <Button Content="📊  Visualizar Datos"
+                                        x:Name="BtnVisualizarDatos"
+                                        Cursor="Hand"
+                                        Height="34"
+                                        Margin="0,0,0,8"
+                                        Click="BtnVisualizarDatos_Click"
+                                        Style="{StaticResource BtnSecondary}"
+                                        ToolTip="Abrir visualizador de datos"/>
+
 
                                 <!-- Nuevo: Calculadora -->
                                 <Button Content="🧮  Calculadora"

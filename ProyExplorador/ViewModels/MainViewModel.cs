@@ -24,6 +24,7 @@ namespace ProyExplorador.ViewModels
         public StatsViewModel        StatsVm        { get; }
         public SettingsViewModel     SettingsVm     { get; }
         public FileReaderViewModel   FileReaderVm   { get; }
+        // DataViewer is now a separate window, not a navigable ViewModel
 
         // ── Estado de navegación ──────────────────────────────────────────
         [ObservableProperty] private ViewModelBase _currentViewModel;
@@ -37,7 +38,7 @@ namespace ProyExplorador.ViewModels
         public string UserInitial { get; } = Environment.UserName.Length > 0
             ? Environment.UserName[0].ToString().ToUpper() : "U";
 
-        public ObservableCollection<NavigationItem> NavItems { get; } = [];
+        public ObservableCollection<NavigationItem> NavItems { get; } = new();
 
         public MainViewModel(
             INavigationService    navigation,
@@ -66,6 +67,8 @@ namespace ProyExplorador.ViewModels
             BuildNavItems();
 
             _navigation.NavigationChanged += OnNavigationChanged;
+
+            // añadir DataViewer en el switch de navegación
         }
 
         // ── Construcción del menú lateral ────────────────────────────────
@@ -80,6 +83,7 @@ namespace ProyExplorador.ViewModels
             NavItems.Add(new NavigationItem { Title = "Limpieza",     Icon = "🧹", ViewKey = "Cleanup",      IsSelected = false });
             NavItems.Add(new NavigationItem { Title = "Estadísticas", Icon = "📊", ViewKey = "Stats",        IsSelected = false });
             NavItems.Add(new NavigationItem { Title = "Configuración",Icon = "⚙️", ViewKey = "Settings",     IsSelected = false });
+            // Visualizador de Datos ahora es una ventana independiente (botón en footer)
         }
 
         // ── Comando de navegación desde sidebar ──────────────────────────
@@ -179,12 +183,15 @@ namespace ProyExplorador.ViewModels
                 "Stats"        => StatsVm,
                 "Settings"     => SettingsVm,
                 "FileReader"   => FileReaderVm,
+                // DataViewer handled as independent window
                 _              => DashboardVm
             };
 
             // Sincronizar ítem seleccionado
             foreach (var nav in NavItems)
                 nav.IsSelected = nav.ViewKey == viewKey;
+
+            // debug diagnostics removed
         }
 
         public override async Task InitializeAsync()
